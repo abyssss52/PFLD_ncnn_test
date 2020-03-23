@@ -225,7 +225,7 @@ JNIEXPORT jstring JNICALL Java_com_tencent_squeezencnn_PFLDNcnn_Detect(JNIEnv* e
     //calc euler angle
     cv::Rodrigues(rotation_vec, rotation_mat);
     cv::hconcat(rotation_mat, translation_vec, pose_mat);
-        cv::decomposeProjectionMatrix(pose_mat, out_intrinsics, out_rotation, out_translation, cv::noArray(), cv::noArray(), cv::noArray(), euler_angle);
+    cv::decomposeProjectionMatrix(pose_mat, out_intrinsics, out_rotation, out_translation, cv::noArray(), cv::noArray(), cv::noArray(), euler_angle);
 
 
     // show result
