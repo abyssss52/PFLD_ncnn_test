@@ -25,9 +25,6 @@
 #include "net.h"
 #include "benchmark.h"
 
-// #include "squeezenet_v1.1.id.h"
-//#include "mobilenetv2.id.h"
-
 // calculate euler angle
 //#include <opencv.h>
 #include <opencv2/core/types.hpp>
@@ -39,7 +36,7 @@
 static ncnn::UnlockedPoolAllocator g_blob_pool_allocator;
 static ncnn::PoolAllocator g_workspace_pool_allocator;
 
-//static std::vector<std::string> mobilenet_words;
+
 static ncnn::Net pfld;
 
 static std::vector<std::string> split_string(const std::string& str, const std::string& delimiter)
@@ -115,32 +112,6 @@ JNIEXPORT jboolean JNICALL Java_com_tencent_squeezencnn_PFLDNcnn_Init(JNIEnv* en
         }
     }
 
-//    // init words
-//    {
-//        AAsset* asset = AAssetManager_open(mgr, "synset_words.txt", AASSET_MODE_BUFFER);
-//        if (!asset)
-//        {
-//            __android_log_print(ANDROID_LOG_DEBUG, "MobilenetNcnn", "open synset_words.txt failed");
-//            return JNI_FALSE;
-//        }
-//
-//        int len = AAsset_getLength(asset);
-//
-//        std::string words_buffer;
-//        words_buffer.resize(len);
-//        int ret = AAsset_read(asset, (void*)words_buffer.data(), len);
-//
-//        AAsset_close(asset);
-//
-//        if (ret != len)
-//        {
-//            __android_log_print(ANDROID_LOG_DEBUG, "MobilenetNcnn", "read synset_words.txt failed");
-//            return JNI_FALSE;
-//        }
-//
-//        mobilenet_words = split_string(words_buffer, "\n");
-//    }
-
     return JNI_TRUE;
 }
 
@@ -189,38 +160,6 @@ JNIEXPORT jstring JNICALL Java_com_tencent_squeezencnn_PFLDNcnn_Detect(JNIEnv* e
         }
     }
 
-//    // return top class
-//    int top_class = 0;
-//    float max_score = 0.f;
-//    for (size_t i=0; i<cls_scores.size(); i++)
-//    {
-//        float s = cls_scores[i];
-//         __android_log_print(ANDROID_LOG_DEBUG, "MobilenetNcnn", "%d %f", i, s);
-//        if (s > max_score)
-//        {
-//            top_class = i;
-//            max_score = s;
-//        }
-//    }
-
-//    const std::string& word = mobilenet_words[top_class];
-//    char tmp[16];
-//    char elasped[32];
-//    std::string result_str;
-//    for (size_t i=0; i<keypoints.size(); i++)
-//    {
-//        float s = keypoints[i];
-//        sprintf(tmp, "%.1f", s*112);
-//        result_str = result_str + tmp + ',';
-//    }
-//    sprintf(tmp, "%lu", keypoints.size());
-//    result_str = result_str + tmp;
-
-//    sprintf(elasped, "%.2f", (ncnn::get_current_time() - start_time));
-
-//    std::string result_str = std::string(word.c_str() + 10) + " = " + tmp;
-//    std::string result_str = std::string(word.c_str() + 10) + elasped;
-    // +10 to skip leading n03179701
 
 //  Start calculate euler angle
     double K[9] = { 6.5308391993466671e+002, 0.0, 3.1950000000000000e+002, 0.0, 6.5308391993466671e+002, 2.3950000000000000e+002, 0.0, 0.0, 1.0 };
@@ -299,7 +238,6 @@ JNIEXPORT jstring JNICALL Java_com_tencent_squeezencnn_PFLDNcnn_Detect(JNIEnv* e
     sprintf(tmp, "%.2f", euler_angle.at<double>(2));
     result_str = result_str + "Z: " + tmp + ",";
 
-//    result_str = 'a';
     jstring result = env->NewStringUTF(result_str.c_str());
 
 //    double elasped = ncnn::get_current_time() - start_time;
